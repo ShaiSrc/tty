@@ -12,7 +12,6 @@ docs/public/
 # Test outputs
 test-results/
 playwright-report/
-tests/e2e/__snapshots__/
 
 # Environment files
 .env
