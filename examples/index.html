@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@shaisrc/tty - Live Demos</title>
+    <style>
+      :root {
+        --vp-c-brand: #a4e400;
+        --vp-c-brand-light: #b8f01e;
+        --vp-c-brand-dark: #8fcc00;
+        --vp-c-bg: #ffffff;
+        --vp-c-bg-soft: #f6f6f7;
+        --vp-c-bg-mute: #f1f1f3;
+        --vp-c-divider: #e2e2e3;
+        --vp-c-text-1: #213547;
+        --vp-c-text-2: #476582;
+        --vp-c-text-3: #7c8f9f;
+      }
+
+      .dark {
+        --vp-c-bg: #000000;
+        --vp-c-bg-soft: #0a0a0a;
+        --vp-c-bg-mute: #1a1a1a;
+        --vp-c-divider: #3c3c43;
+        --vp-c-text-1: #f6f6f7;
+        --vp-c-text-2: #c9cdd4;
+        --vp-c-text-3: #8e8e93;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        background: var(--vp-c-bg);
+        color: var(--vp-c-text-1);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3rem 2rem;
+      }
+
+      .header {
+        text-align: center;
+        max-width: 800px;
+        margin-bottom: 3rem;
+        position: relative;
+      }
+
+      .logo {
+        width: 75%;
+        max-width: 500px;
+        height: auto;
+      }
+
+      .logo-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+        border-radius: 14px;
+        background: var(--vp-c-bg-mute);
+        border: 1px solid var(--vp-c-divider);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .logo {
+          max-width: 120px;
+        }
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        background: var(--vp-c-bg-soft);
+        border: 1px solid var(--vp-c-divider);
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        z-index: 100;
+      }
+
+      .theme-toggle:hover {
+        border-color: var(--vp-c-brand);
+        background: var(--vp-c-bg-mute);
+      }
+
+      .theme-toggle svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--vp-c-text-1);
+      }
+
+      h1 {
+        color: var(--vp-c-text-1);
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        color: var(--vp-c-text-2);
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      .examples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .example-card {
+        background: var(--vp-c-bg);
+        border: 1px solid var(--vp-c-divider);
+        border-radius: 8px;
+        padding: 1.5rem;
+        transition: all 0.2s;
+      }
+
+      .example-card:hover {
+        border-color: var(--vp-c-brand);
+        box-shadow: 0 2px 12px rgba(164, 228, 0, 0.12);
+      }
+
+      .example-card h2 {
+        color: var(--vp-c-text-1);
+        margin-bottom: 0.75rem;
+        font-size: 1.35rem;
+        font-weight: 600;
+      }
+
+      .example-card p {
+        color: var(--vp-c-text-2);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .example-card .features {
+        list-style: none;
+        margin-bottom: 1.25rem;
+      }
+
+      .example-card .features li {
+        color: var(--vp-c-text-2);
+        font-size: 0.9rem;
+        padding: 0.35rem 0;
+        padding-left: 1.25rem;
+        position: relative;
+      }
+
+      .example-card .features li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--vp-c-brand);
+        font-weight: 600;
+      }
+
+      .example-card button {
+        background: var(--vp-c-brand);
+        color: #213547;
+        border: none;
+        padding: 0.65rem 1.25rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.2s;
+      }
+
+      .example-card button:hover {
+        background: var(--vp-c-brand-light);
+      }
+
+      .example-card button:active {
+        transform: scale(0.98);
+      }
+
+      #canvas-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.92);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      #canvas-container.active {
+        display: flex;
+      }
+
+      #game-canvas {
+        background: #000000;
+        border: 2px solid var(--vp-c-brand);
+        box-shadow: 0 0 30px rgba(164, 228, 0, 0.3);
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+
+      #close-btn {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+
+      #close-btn:hover {
+        background: #dc2626;
+      }
+
+      .github-link {
+        margin-top: 2.5rem;
+        display: inline-block;
+        color: var(--vp-c-text-2);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--vp-c-divider);
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+      }
+
+      .github-link:hover {
+        border-color: var(--vp-c-brand);
+        color: var(--vp-c-text-1);
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="theme-toggle"
+      onclick="toggleTheme()"
+      aria-label="Toggle theme"
+    >
+      <svg
+        class="sun"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+
+    <div class="header">
+      <div class="logo-wrap">
+        <img src="/logo.png" alt="@shaisrc/tty" class="logo" />
+      </div>
+      <h1>🎮 Live Demos</h1>
+      <p class="subtitle">
+        Interactive examples showcasing @shaisrc/tty in action. Click any
+        example to run it in your browser.
+      </p>
+    </div>
+
+    <div class="examples">
+      <div class="example-card">
+        <h2>Intro Animation</h2>
+        <p>Animated logo reveal with pulsing effects</p>
+        <ul class="features">
+          <li>Tile-by-tile border drawing</li>
+          <li>Camera follow & zoom</li>
+          <li>Character-by-character text reveal</li>
+          <li>Yellow pulsing effect</li>
+        </ul>
+        <button
+          data-testid="run-intro-animation"
+          onclick="loadExample('intro-animation')"
+        >
+          Run Demo
+        </button>
+      </div>
+
+      <div class="example-card">
+        <h2>Basic Game</h2>
+        <p>Simple player movement with keyboard controls</p>
+        <ul class="features">
+          <li>WASD/Arrow key movement</li>
+          <li>Collision detection</li>
+          <li>Game state management</li>
+          <li>Basic UI elements</li>
+        </ul>
+        <button
+          data-testid="run-basic-game"
+          onclick="loadExample('basic-game')"
+        >
+          Run Demo
+        </button>
+      </div>
+
+      <div class="example-card">
+        <h2>Menu System</h2>
+        <p>Interactive menu system with navigation</p>
+        <ul class="features">
+          <li>Keyboard navigation</li>
+          <li>Multiple menu screens</li>
+          <li>Styled menu items</li>
+          <li>Selection indicators</li>
+        </ul>
+        <button data-testid="run-menu-demo" onclick="loadExample('menu-demo')">
+          Run Demo
+        </button>
+      </div>
+
+      <div class="example-card">
+        <h2>RPG UI</h2>
+        <p>Complete RPG-style interface</p>
+        <ul class="features">
+          <li>Character stats panel</li>
+          <li>Inventory system</li>
+          <li>Map rendering</li>
+          <li>Message log</li>
+        </ul>
+        <button data-testid="run-rpg-ui" onclick="loadExample('rpg-ui')">
+          Run Demo
+        </button>
+      </div>
+
+      <div class="example-card">
+        <h2>Snake Game</h2>
+        <p>Classic Snake game implementation</p>
+        <ul class="features">
+          <li>Full game logic</li>
+          <li>Score tracking</li>
+          <li>Pause functionality</li>
+          <li>Game over screen</li>
+        </ul>
+        <button
+          data-testid="run-snake-game"
+          onclick="loadExample('snake-game')"
+        >
+          Run Demo
+        </button>
+      </div>
+
+      <div class="example-card">
+        <h2>Space Invaders</h2>
+        <p>Arcade classic with keyboard & gamepad support</p>
+        <ul class="features">
+          <li>🎮 Gamepad support</li>
+          <li>Multiple levels</li>
+          <li>Enemy AI & barriers</li>
+          <li>Classic arcade gameplay</li>
+        </ul>
+        <button
+          data-testid="run-space-invaders"
+          onclick="loadExample('space-invaders')"
+        >
+          Run Demo
+        </button>
+      </div>
+    </div>
+
+    <a
+      href="https://github.com/shaisrc/tty"
+      class="github-link"
+      target="_blank"
+    >
+      View on GitHub
+    </a>
+
+    <div id="canvas-container">
+      <button id="close-btn" onclick="closeExample()">Close (ESC)</button>
+      <canvas id="game-canvas" tabindex="0"></canvas>
+    </div>
+
+    <script type="module">
+      // Theme management
+      function initTheme() {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const theme = savedTheme || (prefersDark ? "dark" : "light");
+
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      }
+
+      window.toggleTheme = function () {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      };
+
+      // Initialize theme on load
+      initTheme();
+
+      // Expose currentGame on window for testing
+      window.currentGame = null;
+
+      const exampleLoaders = {
+        "intro-animation": () => import("./intro-animation.ts"),
+        "basic-game": () => import("./basic-game.ts"),
+        "menu-demo": () => import("./menu-demo.ts"),
+        "rpg-ui": () => import("./rpg-ui.ts"),
+        "snake-game": () => import("./snake-game.ts"),
+        "space-invaders": () => import("./space-invaders.ts"),
+      };
+
+      window.loadExample = async function (exampleName) {
+        // Clean up previous game
+        if (window.currentGame && window.currentGame.stop) {
+          window.currentGame.stop();
+        }
+
+        // Show canvas container
+        document.getElementById("canvas-container").classList.add("active");
+
+        // Dynamic import to load the module (this will execute the code and attach to window)
+        const loader = exampleLoaders[exampleName];
+        if (!loader) {
+          console.error(`No loader found for example: ${exampleName}`);
+          return;
+        }
+        await loader();
+
+        // Get the start function name (convert kebab-case to camelCase with 'start' prefix)
+        const functionName =
+          "start" +
+          exampleName
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join("");
+
+        // Call the start function from window
+        const canvas = document.getElementById("game-canvas");
+        const startFunction = window[functionName];
+
+        if (startFunction) {
+          window.currentGame = startFunction(canvas);
+          if (canvas) {
+            if (!canvas.hasAttribute("tabindex")) {
+              canvas.setAttribute("tabindex", "0");
+            }
+            canvas.focus();
+          }
+        } else {
+          console.error(`No start function found: ${functionName}`);
+        }
+      };
+
+      window.closeExample = function () {
+        if (window.currentGame && window.currentGame.stop) {
+          window.currentGame.stop();
+        }
+        window.currentGame = null;
+        document.getElementById("canvas-container").classList.remove("active");
+      };
+
+      // ESC key to close
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeExample();
+        }
+      });
+    </script>
+  </body>
+</html>

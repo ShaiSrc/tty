@@ -1,0 +1,318 @@
+/**
+ * Custom TTY Theme - Terminal/ASCII Aesthetic
+ * Color palette from @shaisrc/tty logo: lime green on black
+ */
+
+/* Import monospace fonts */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
+
+:root {
+  /* TTY Color Palette - Lime Green on Black */
+  --tty-green: #a4e400;
+  --tty-green-light: #c5ff33;
+  --tty-green-dark: #7fb800;
+  --tty-black: #0a0a0a;
+  --tty-gray: #1a1a1a;
+  --tty-gray-light: #2a2a2a;
+
+  /* Override VitePress colors */
+  --vp-c-brand-1: var(--tty-green);
+  --vp-c-brand-2: var(--tty-green-light);
+  --vp-c-brand-3: var(--tty-green-dark);
+  --vp-c-brand-soft: rgba(164, 228, 0, 0.14);
+
+  /* Background colors */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #f6f6f7;
+  --vp-c-bg-mute: #f2f2f3;
+
+  /* Text colors */
+  --vp-c-text-1: rgba(60, 60, 67, 1);
+  --vp-c-text-2: rgba(60, 60, 67, 0.78);
+  --vp-c-text-3: rgba(60, 60, 67, 0.56);
+
+  /* Code blocks */
+  --vp-code-bg: var(--tty-gray);
+  --vp-code-color: var(--tty-green-light);
+
+  /* Monospace font */
+  --vp-font-family-base:
+    "IBM Plex Mono", "JetBrains Mono", "Consolas", "Monaco", "Courier New",
+    monospace;
+  --vp-font-family-mono:
+    "JetBrains Mono", "IBM Plex Mono", "Consolas", "Monaco", "Courier New",
+    monospace;
+}
+
+/* Dark mode colors */
+.dark {
+  --vp-c-bg: var(--tty-black);
+  --vp-c-bg-soft: var(--tty-gray);
+  --vp-c-bg-mute: var(--tty-gray-light);
+
+  --vp-c-text-1: rgba(255, 255, 245, 0.98);
+  --vp-c-text-2: rgba(235, 235, 245, 0.78);
+  --vp-c-text-3: rgba(235, 235, 245, 0.56);
+
+  /* Enhanced code block contrast in dark mode */
+  --vp-code-bg: rgba(0, 0, 0, 0.4);
+  --vp-code-color: var(--tty-green-light);
+}
+
+/* Logo styling */
+.VPNavBarTitle .logo {
+  filter: brightness(1.1);
+  transition: filter 0.3s ease;
+}
+
+.VPNavBarTitle .logo:hover {
+  filter: brightness(1.3);
+}
+
+/* Code blocks - terminal aesthetic */
+div[class*="language-"] {
+  background-color: var(--tty-black) !important;
+  border: 1px solid var(--tty-green-dark);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(164, 228, 0, 0.1);
+}
+
+div[class*="language-"] code {
+  color: var(--tty-green-light);
+  text-shadow: 0 0 2px rgba(164, 228, 0, 0.3);
+}
+
+/* Inline code */
+.vp-doc :not(pre) > code {
+  background-color: var(--tty-gray);
+  color: var(--tty-green-light);
+  border: 1px solid var(--tty-green-dark);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--vp-font-family-mono);
+  font-weight: 500;
+}
+
+.dark .vp-doc :not(pre) > code {
+  background-color: rgba(10, 10, 10, 0.8);
+  box-shadow: 0 0 5px rgba(164, 228, 0, 0.1);
+}
+
+/* Headers with terminal aesthetic */
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4 {
+  font-family: var(--vp-font-family-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.dark .vp-doc h1,
+.dark .vp-doc h2 {
+  color: var(--tty-green-light);
+  text-shadow: 0 0 8px rgba(164, 228, 0, 0.2);
+}
+
+/* Links with terminal green */
+.vp-doc a {
+  color: var(--tty-green-dark);
+  text-decoration-color: rgba(127, 184, 0, 0.3);
+}
+
+.vp-doc a:hover {
+  color: var(--tty-green);
+  text-decoration-color: var(--tty-green);
+}
+
+.dark .vp-doc a {
+  color: var(--tty-green-light);
+}
+
+.dark .vp-doc a:hover {
+  color: var(--tty-green);
+  text-shadow: 0 0 4px rgba(164, 228, 0, 0.3);
+}
+
+/* Custom blocks (tip, warning, etc) */
+.vp-doc .custom-block {
+  border-left-width: 3px;
+}
+
+.dark .vp-doc .tip {
+  border-color: var(--tty-green);
+  background-color: rgba(164, 228, 0, 0.05);
+}
+
+.dark .vp-doc .tip .custom-block-title {
+  color: var(--tty-green-light);
+}
+
+/* Tables */
+.vp-doc table {
+  border-collapse: collapse;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.9em;
+}
+
+.dark .vp-doc table thead tr {
+  background-color: var(--tty-gray);
+  border-bottom: 2px solid var(--tty-green-dark);
+}
+
+.dark .vp-doc table tbody tr:nth-child(2n) {
+  background-color: rgba(164, 228, 0, 0.02);
+}
+
+/* Sidebar */
+.dark .VPSidebar {
+  background-color: var(--tty-black);
+  border-right: 1px solid var(--tty-green-dark);
+}
+
+.dark .VPSidebarItem.is-active .text {
+  color: var(--tty-green-light);
+  font-weight: 600;
+}
+
+/* Search box */
+.dark .DocSearch-Button {
+  background-color: var(--tty-gray) !important;
+  border: 1px solid var(--tty-green-dark);
+}
+
+.dark .DocSearch-Button:hover {
+  border-color: var(--tty-green);
+  box-shadow: 0 0 8px rgba(164, 228, 0, 0.2);
+}
+
+/* Hero section on homepage */
+.dark .VPHero .name {
+  background: linear-gradient(
+    135deg,
+    var(--tty-green-light) 0%,
+    var(--tty-green) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: var(--vp-font-family-mono);
+  text-shadow: 0 0 20px rgba(164, 228, 0, 0.3);
+}
+
+.dark .VPHero .tagline {
+  color: var(--tty-green-light);
+  opacity: 0.8;
+}
+
+/* Buttons */
+.dark .VPButton.brand {
+  background-color: var(--tty-green);
+  color: var(--tty-black);
+  border-color: var(--tty-green);
+  font-family: var(--vp-font-family-mono);
+  font-weight: 600;
+}
+
+.dark .VPButton.brand:hover {
+  background-color: var(--tty-green-light);
+  box-shadow: 0 0 12px rgba(164, 228, 0, 0.4);
+}
+
+.dark .VPButton.alt {
+  background-color: transparent;
+  color: var(--tty-green-light);
+  border: 1px solid var(--tty-green-dark);
+}
+
+.dark .VPButton.alt:hover {
+  border-color: var(--tty-green);
+  background-color: rgba(164, 228, 0, 0.05);
+}
+
+/* Footer */
+.dark .VPFooter {
+  border-top: 1px solid var(--tty-green-dark);
+  background-color: var(--tty-black);
+}
+
+/* Scrollbar styling */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--tty-black);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--tty-green-dark);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--tty-green);
+  box-shadow: 0 0 6px rgba(164, 228, 0, 0.3);
+}
+
+/* ASCII art / pre blocks */
+.vp-doc pre {
+  background-color: var(--tty-black) !important;
+  border: 1px solid var(--tty-green-dark);
+  box-shadow: 0 0 10px rgba(164, 228, 0, 0.05);
+}
+
+/* Feature grid on homepage */
+.dark .VPFeature {
+  background-color: var(--tty-gray);
+  border: 1px solid var(--tty-green-dark);
+  transition: all 0.3s ease;
+}
+
+.dark .VPFeature:hover {
+  border-color: var(--tty-green);
+  box-shadow: 0 0 15px rgba(164, 228, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.dark .VPFeature .icon {
+  filter: hue-rotate(90deg) saturate(1.5);
+}
+
+/* Nav bar */
+.dark .VPNavBar {
+  background-color: var(--tty-black);
+  border-bottom: 1px solid var(--tty-green-dark);
+}
+
+.dark .VPNavBarMenu .text {
+  color: var(--tty-green-light);
+}
+
+.dark .VPNavBarMenu .text:hover {
+  color: var(--tty-green);
+}
+
+/* Terminal cursor effect for code */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Badge styling */
+.vp-doc .badge {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.85em;
+}
+
+.dark .vp-doc .badge.tip {
+  background-color: var(--tty-green-dark);
+  color: var(--tty-black);
+}

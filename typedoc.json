@@ -1,0 +1,35 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "outputFileStrategy": "modules",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "includeVersion": true,
+  "readme": "none",
+  "name": "@shaisrc/tty",
+  "categorizeByGroup": true,
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "Core",
+    "Render Targets",
+    "Input",
+    "Game Loop",
+    "Colors",
+    "Types",
+    "*"
+  ],
+  "sort": ["kind", "instance-first", "alphabetical"],
+  "kindSortOrder": ["Class", "Interface", "TypeAlias", "Function", "Variable"],
+  "visibilityFilters": {
+    "protected": false,
+    "private": false,
+    "inherited": true,
+    "external": false
+  },
+  "hideGenerator": true,
+  "disableSources": false,
+  "githubPages": false
+}
