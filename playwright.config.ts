@@ -51,6 +51,7 @@ export default defineConfig({
     toMatchSnapshot: {
       // Allow small pixel differences due to font rendering across platforms
       maxDiffPixelRatio: 0.05, // 5% threshold
+      threshold: 0.2, // Per-pixel color difference threshold (0-1)
     },
   },
 
