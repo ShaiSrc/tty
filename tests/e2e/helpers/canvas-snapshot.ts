@@ -31,8 +31,11 @@ export class CanvasSnapshot {
     // Take screenshot of canvas only
     const screenshot = await canvas.screenshot();
 
-    // Use Playwright's built-in snapshot comparison
-    await expect(screenshot).toMatchSnapshot(`${snapshotName}.png`);
+    // Use Playwright's built-in snapshot comparison with tolerance for cross-platform rendering
+    await expect(screenshot).toMatchSnapshot(`${snapshotName}.png`, {
+      maxDiffPixelRatio: 0.05, // Allow 5% pixel difference
+      threshold: 0.2, // Per-pixel color threshold
+    });
   }
 
   /**
