@@ -331,26 +331,28 @@ renderer.box(x, y, w, h, {
 
 ## 📖 Documentation
 
-- [Quick Start Guide](docs/quick-start.md) - Step-by-step tutorial
-- [Core Types](docs/core-types.md) - Type definitions reference
-- [Renderer API](docs/renderer-api.md) - Complete API documentation
-- [Box Drawing](docs/box-drawing.md) - Box and border styles
-- [Color Utilities](docs/color-utilities.md) - Color manipulation
-- [Canvas Target](docs/canvas-target.md) - Browser rendering
-- [Layer System](docs/layer-system.md) - Multi-layer rendering
-- [Camera System](docs/camera-system.md) - Viewport and scrolling
-- [Keyboard Input](docs/guide/keyboard-input.md) - Keyboard handling
-- [Gamepad Input](docs/guide/gamepad-input.md) - Controller/gamepad support
-- [Pointer Input](docs/pointer-input.md) - Mouse/touch/pen handling
-- [Game Loop](docs/game-loop.md) - Game loop utilities
-- [Menu Helper](docs/menu-helper.md) - Menu rendering
-- [Progress Bar](docs/progress-bar.md) - Progress indicators
-- [Panel Helper](docs/panel-helper.md) - Panel/window rendering
-- [Alignment](docs/alignment.md) - Text alignment helpers
+Full documentation available at **[tty.shaitern.dev](https://tty.shaitern.dev)**
+
+- [Quick Start Guide](https://tty.shaitern.dev/guide/quick-start.html) - Step-by-step tutorial
+- [Core Types](https://tty.shaitern.dev/guide/core-types.html) - Type definitions reference
+- [Renderer API](https://tty.shaitern.dev/guide/renderer-api.html) - Complete API documentation
+- [Box Drawing](https://tty.shaitern.dev/guide/box-drawing.html) - Box and border styles
+- [Color Utilities](https://tty.shaitern.dev/guide/color-utilities.html) - Color manipulation
+- [Canvas Target](https://tty.shaitern.dev/guide/canvas-target.html) - Browser rendering
+- [Layer System](https://tty.shaitern.dev/guide/layer-system.html) - Multi-layer rendering
+- [Camera System](https://tty.shaitern.dev/guide/camera-system.html) - Viewport and scrolling
+- [Keyboard Input](https://tty.shaitern.dev/guide/keyboard-input.html) - Keyboard handling
+- [Gamepad Input](https://tty.shaitern.dev/guide/gamepad-input.html) - Controller/gamepad support
+- [Pointer Input](https://tty.shaitern.dev/guide/pointer-input.html) - Mouse/touch/pen handling
+- [Game Loop](https://tty.shaitern.dev/guide/game-loop.html) - Game loop utilities
+- [Menu Helper](https://tty.shaitern.dev/guide/menu-helper.html) - Menu rendering
+- [Progress Bar](https://tty.shaitern.dev/guide/progress-bar.html) - Progress indicators
+- [Panel Helper](https://tty.shaitern.dev/guide/panel-helper.html) - Panel/window rendering
+- [Alignment](https://tty.shaitern.dev/guide/alignment.html) - Text alignment helpers
 
 ## 💡 Examples
 
-Check out the [examples/](examples/) folder for complete working examples:
+Check out **[live interactive demos](https://tty.shaitern.dev/demos/index.html)** or the [examples/](examples/) folder for complete working examples:
 
 - **[basic-game.ts](examples/basic-game.ts)** - Simple player movement
 - **[menu-demo.ts](examples/menu-demo.ts)** - Interactive menu system
