@@ -46,6 +46,15 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
   },
 
+  // Visual comparison settings
+  expect: {
+    toMatchSnapshot: {
+      // Allow small pixel differences due to font rendering across platforms
+      maxDiffPixelRatio: 0.05, // 5% threshold
+      threshold: 0.2, // Per-pixel color difference threshold (0-1)
+    },
+  },
+
   // Configure projects for major browsers
   projects: [
     {
