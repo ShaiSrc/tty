@@ -44,6 +44,16 @@ export interface RGBColor {
 export type Color = NamedColor | HexColor | RGBColor | null;
 
 /**
+ * Unified cell metadata for scaled characters
+ *
+ * When a character is scaled (e.g., 2×2), the origin cell stores the scale information
+ * and occupied cells store a reference to the origin.
+ */
+export type UnifiedCell =
+  | { scale: number; isOrigin: true }
+  | { mergedInto: string };
+
+/**
  * A single cell in the render buffer
  */
 export interface Cell {
@@ -53,6 +63,8 @@ export interface Cell {
   fg: Color;
   /** Background color */
   bg: Color;
+  /** Unified cell metadata for scaled characters */
+  unified?: UnifiedCell;
 }
 
 /**
@@ -145,6 +157,24 @@ export interface RenderTarget {
    * @param bg - Background color
    */
   setCell(x: number, y: number, char: string, fg: Color, bg: Color): void;
+
+  /**
+   * Set a scaled character occupying multiple cells
+   * @param x - X coordinate (0-indexed)
+   * @param y - Y coordinate (0-indexed)
+   * @param scale - Scale factor (2 = 2×2, 3 = 3×3, etc.)
+   * @param char - Character to display scaled
+   * @param fg - Foreground color
+   * @param bg - Background color
+   */
+  setCellScaled?(
+    x: number,
+    y: number,
+    scale: number,
+    char: string,
+    fg: Color,
+    bg: Color,
+  ): void;
 
   /**
    * Clear the entire render target

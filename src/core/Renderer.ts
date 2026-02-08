@@ -308,6 +308,202 @@ export class Renderer {
   }
 
   /**
+   * Set a scaled character occupying multiple cells
+   *
+   * Creates a unified cell where one character is rendered across scale×scale cells.
+   * For example, scale=2 creates a 2×2 character, scale=3 creates a 3×3 character.
+   * Maximum scale is 5.
+   *
+   * @param x - Top-left X coordinate in world space
+   * @param y - Top-left Y coordinate in world space
+   * @param scale - Scale factor (2-5, renders scale×scale cells)
+   * @param char - Character to display scaled
+   * @param fg - Foreground color (defaults to renderer's defaultFg)
+   * @param bg - Background color (defaults to renderer's defaultBg)
+   * @returns The renderer instance for chaining
+   *
+   * @example
+   * ```ts
+   * renderer
+   *   .setCharScaled(10, 10, 2, '♥', 'red')    // 2×2 red heart
+   *   .setCharScaled(15, 10, 3, '@', 'yellow') // 3×3 yellow player
+   *   .render()
+   * ```
+   */
+  setCharScaled(
+    x: number,
+    y: number,
+    scale: number,
+    char: string,
+    fg?: Color,
+    bg?: Color,
+  ): this {
+    // Transform world to screen coordinates
+    const screenX = x - this.camera.x;
+    const screenY = y - this.camera.y;
+
+    // Validate scale and bounds
+    if (!this.validateScaledChar(screenX, screenY, scale, x, y)) {
+      return this;
+    }
+
+    // Check for overwrites and warn
+    this.checkScaledOverwrites(screenX, screenY, scale);
+
+    // Clear and create unified cell
+    this.createUnifiedCell(screenX, screenY, scale, char, fg, bg);
+
+    return this;
+  }
+
+  /**
+   * Validate scaled character scale and bounds
+   */
+  private validateScaledChar(
+    screenX: number,
+    screenY: number,
+    scale: number,
+    worldX: number,
+    worldY: number,
+  ): boolean {
+    // Validate scale
+    if (scale < 1 || scale > 5 || !Number.isInteger(scale)) {
+      if (this.safeMode) {
+        throw new Error(
+          `Invalid scale: ${scale}. Scale must be an integer between 1 and 5`,
+        );
+      }
+      return false;
+    }
+
+    // Validate bounds
+    const endX = screenX + scale - 1;
+    const endY = screenY + scale - 1;
+    if (this.safeMode) {
+      if (
+        screenX < 0 ||
+        screenY < 0 ||
+        endX >= this.width ||
+        endY >= this.height
+      ) {
+        throw new Error(
+          `Scaled character ${scale}×${scale} at (${worldX},${worldY}) extends beyond grid bounds`,
+        );
+      }
+    } else if (!this.isInBounds(screenX, screenY)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Check for existing unified cells and warn if overwriting
+   */
+  private checkScaledOverwrites(
+    screenX: number,
+    screenY: number,
+    scale: number,
+  ): void {
+    for (let dy = 0; dy < scale; dy++) {
+      for (let dx = 0; dx < scale; dx++) {
+        const cellKey = `${screenX + dx},${screenY + dy}`;
+        const existing = this.buffer.get(cellKey);
+        if (existing?.unified) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `Overwriting unified cell at (${screenX + dx},${screenY + dy})`,
+          );
+          return; // Only warn once
+        }
+      }
+    }
+  }
+
+  /**
+   * Create unified cell with markers
+   */
+  private createUnifiedCell(
+    screenX: number,
+    screenY: number,
+    scale: number,
+    char: string,
+    fg?: Color,
+    bg?: Color,
+  ): void {
+    // Clear all cells in the unified area
+    for (let dy = 0; dy < scale; dy++) {
+      for (let dx = 0; dx < scale; dx++) {
+        if (this.isInBounds(screenX + dx, screenY + dy)) {
+          this.buffer.delete(`${screenX + dx},${screenY + dy}`);
+        }
+      }
+    }
+
+    // Set origin cell with unified metadata
+    this.buffer.set(`${screenX},${screenY}`, {
+      char,
+      fg: fg ?? this.defaultFg,
+      bg: bg ?? this.defaultBg,
+      unified: { scale, isOrigin: true },
+    });
+
+    // Create merged marker cells for occupied positions
+    for (let dy = 0; dy < scale; dy++) {
+      for (let dx = 0; dx < scale; dx++) {
+        if (dx === 0 && dy === 0) continue; // Skip origin
+        if (this.isInBounds(screenX + dx, screenY + dy)) {
+          this.buffer.set(`${screenX + dx},${screenY + dy}`, {
+            char: "",
+            fg: null,
+            bg: null,
+            unified: { mergedInto: `${screenX},${screenY}` },
+          });
+        }
+      }
+    }
+  }
+
+  /**
+   * Draw scaled text string
+   *
+   * Draws text where each character is scaled to occupy scale×scale cells.
+   * Characters are placed horizontally with each scaled character occupying
+   * its scaled width before the next character.
+   *
+   * @param x - Starting X coordinate in world space
+   * @param y - Starting Y coordinate in world space
+   * @param scale - Scale factor for each character (2-5)
+   * @param text - Text string to draw scaled
+   * @param fg - Foreground color (defaults to renderer's defaultFg)
+   * @param bg - Background color (defaults to renderer's defaultBg)
+   * @returns The renderer instance for chaining
+   *
+   * @example
+   * ```ts
+   * renderer
+   *   .scaledText(10, 5, 2, 'BIG', 'yellow')      // Each char is 2×2
+   *   .scaledText(10, 10, 3, 'HUGE', 'red')       // Each char is 3×3
+   *   .render()
+   * ```
+   */
+  scaledText(
+    x: number,
+    y: number,
+    scale: number,
+    text: string,
+    fg?: Color,
+    bg?: Color,
+  ): this {
+    let offsetX = 0;
+    for (let i = 0; i < text.length; i++) {
+      this.setCharScaled(x + offsetX, y, scale, text[i], fg, bg);
+      offsetX += scale; // Move by scale cells for next character
+    }
+    return this;
+  }
+
+  /**
    * Draw a text string
    *
    * Draws text horizontally starting at the specified position.
@@ -434,10 +630,43 @@ export class Renderer {
     }
 
     const composite = this.layerManager.composite();
+    const rendered = new Set<string>();
+
     for (const [key, cell] of composite.entries()) {
+      // Skip if already rendered as part of unified cell
+      if (rendered.has(key)) continue;
+
+      // Skip merged marker cells
+      if (cell.unified && "mergedInto" in cell.unified) {
+        continue;
+      }
+
       const [x, y] = key.split(",").map(Number);
-      this.target.setCell(x, y, cell.char, cell.fg, cell.bg);
+
+      // Handle unified origin cells
+      if (cell.unified && cell.unified.isOrigin) {
+        const { scale } = cell.unified;
+
+        // Mark all cells in the unified area as rendered
+        for (let dy = 0; dy < scale; dy++) {
+          for (let dx = 0; dx < scale; dx++) {
+            rendered.add(`${x + dx},${y + dy}`);
+          }
+        }
+
+        // Use scaled rendering if available
+        if (this.target.setCellScaled) {
+          this.target.setCellScaled(x, y, scale, cell.char, cell.fg, cell.bg);
+        } else {
+          // Fallback: render at origin only
+          this.target.setCell(x, y, cell.char, cell.fg, cell.bg);
+        }
+      } else {
+        // Normal cell rendering
+        this.target.setCell(x, y, cell.char, cell.fg, cell.bg);
+      }
     }
+
     this.target.flush();
     return this;
   }

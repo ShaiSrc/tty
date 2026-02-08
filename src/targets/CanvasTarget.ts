@@ -88,6 +88,52 @@ export class CanvasTarget implements RenderTarget {
   }
 
   /**
+   * Set a scaled character occupying multiple cells
+   */
+  setCellScaled(
+    x: number,
+    y: number,
+    scale: number,
+    char: string,
+    fg: Color,
+    bg: Color,
+  ): void {
+    const pixelX = x * this.charWidth;
+    const pixelY = y * this.charHeight;
+    const pixelWidth = scale * this.charWidth;
+    const pixelHeight = scale * this.charHeight;
+
+    // Draw background across all cells
+    if (bg !== null) {
+      this.ctx.fillStyle = toCSSColor(bg);
+      this.ctx.fillRect(pixelX, pixelY, pixelWidth, pixelHeight);
+    }
+
+    // Draw scaled character
+    if (char && char !== " ") {
+      this.ctx.save();
+
+      // Scale font for larger rendering
+      const scaledFontSize = this.fontSize * scale;
+      this.ctx.font = `${scaledFontSize}px ${this.fontFamily}`;
+
+      // Measure text for centering
+      const metrics = this.ctx.measureText(char);
+      const textWidth = metrics.width;
+
+      // Center character in the unified cell area
+      // textBaseline is 'top', so we need to adjust Y positioning
+      const offsetX = (pixelWidth - textWidth) / 2;
+      const offsetY = (pixelHeight - scaledFontSize * 0.8) / 2;
+
+      this.ctx.fillStyle = toCSSColor(fg);
+      this.ctx.fillText(char, pixelX + offsetX, pixelY + offsetY);
+
+      this.ctx.restore();
+    }
+  }
+
+  /**
    * Clear the entire canvas
    */
   clear(): void {

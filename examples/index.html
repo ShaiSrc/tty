@@ -392,6 +392,23 @@
           Run Demo
         </button>
       </div>
+
+      <div class="example-card">
+        <h2>Scaled Characters</h2>
+        <p>Large character rendering with unified cells</p>
+        <ul class="features">
+          <li>2×2 to 5×5 character scaling</li>
+          <li>Unified cell system</li>
+          <li>Visual centering & alignment</li>
+          <li>scaledText() API support</li>
+        </ul>
+        <button
+          data-testid="run-scaled-characters"
+          onclick="loadExample('scaled-characters')"
+        >
+          Run Demo
+        </button>
+      </div>
     </div>
 
     <a
@@ -439,6 +456,7 @@
         "rpg-ui": () => import("./rpg-ui.ts"),
         "snake-game": () => import("./snake-game.ts"),
         "space-invaders": () => import("./space-invaders.ts"),
+        "scaled-characters": () => import("./scaled-characters-demo.ts"),
       };
 
       window.loadExample = async function (exampleName) {
